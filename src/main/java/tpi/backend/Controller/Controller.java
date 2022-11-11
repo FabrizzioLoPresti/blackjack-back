@@ -2,8 +2,10 @@ package tpi.backend.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tpi.backend.Models.Carta;
+import tpi.backend.Models.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -323,6 +325,22 @@ public class Controller {
         }
     }
 
+    @PostMapping("/guardarResultado/{id}")
+    public void guardarResultadosBD(@PathVariable int id){
+    try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            PreparedStatement st = conn.prepareStatement("INSERT INTO resultados (idUsuario, resultado) VALUES (?, ?)");
+            int resultado = getGanador();
+
+            st.setInt(1, id);
+            st.setInt(2, resultado);
+            st.executeUpdate();
+            st.close();
+            conn.close();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
 
 
 

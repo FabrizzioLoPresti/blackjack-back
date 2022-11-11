@@ -17,12 +17,12 @@ public class ReportesController {
         return true;
     }
 
-    // obtener un reporte del porcentaje de victorias totales
+
     @GetMapping("/victorias")
     public ResponseEntity<Integer> getPorcentajeVictorias(){
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE idTipoResultado = 1");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 2");
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 return ResponseEntity.ok(resultSet.getInt(1));
@@ -34,12 +34,11 @@ public class ReportesController {
         }
     }
 
-    // indice de victorias por parte del crupier
     @GetMapping("/victoriasCrupier")
     public ResponseEntity<Integer> getPorcentajeVictoriasCrupier(){
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE idTipoResultado = 2");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 1");
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 return ResponseEntity.ok(resultSet.getInt(1));
@@ -51,12 +50,43 @@ public class ReportesController {
         }
     }
 
-    // cantidad de juegos jugados por dia
     @GetMapping("/juegosPorDia")
     public ResponseEntity<Integer> getJuegosPorDia(){
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
             PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE fecha = CURDATE()");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return ResponseEntity.ok(resultSet.getInt(1));
+            }
+            return ResponseEntity.notFound().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/victorias21")
+    public ResponseEntity<Integer> getVictorias21(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 2 AND puntajeJugador = 21");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return ResponseEntity.ok(resultSet.getInt(1));
+            }
+            return ResponseEntity.notFound().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/victorias21Crupier")
+    public ResponseEntity<Integer> getVictorias21Crupier(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 1 AND puntajeCrupier = 21");
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 return ResponseEntity.ok(resultSet.getInt(1));
