@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+
 @RequestMapping("/reportes")
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -19,82 +21,71 @@ public class ReportesController {
 
 
     @GetMapping("/victorias")
-    public ResponseEntity<Integer> getPorcentajeVictorias(){
+    public ArrayList<Integer> getVictorias(){
         try {
+            ArrayList<Integer> victorias = new ArrayList<>();
+
             Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 2");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado =1");
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return ResponseEntity.ok(resultSet.getInt(1));
+            while(resultSet.next()){
+                victorias.add(resultSet.getInt(1));
             }
-            return ResponseEntity.notFound().build();
+
+            preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado =2");
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                victorias.add(resultSet.getInt(1));
+            }
+
+            return victorias;
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return null;
         }
     }
 
-    @GetMapping("/victoriasCrupier")
-    public ResponseEntity<Integer> getPorcentajeVictoriasCrupier(){
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 1");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return ResponseEntity.ok(resultSet.getInt(1));
-            }
-            return ResponseEntity.notFound().build();
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     @GetMapping("/juegosPorDia")
-    public ResponseEntity<Integer> getJuegosPorDia(){
+    public ArrayList<Integer> getJuegosPorDia(){
         try {
+            ArrayList<Integer> juegosPorDia = new ArrayList<>();
             Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE fecha = CURDATE()");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida group by WEEKDAY(fecha)");
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return ResponseEntity.ok(resultSet.getInt(1));
+
+            while(resultSet.next()){
+                juegosPorDia.add(resultSet.getInt(1));
             }
-            return ResponseEntity.notFound().build();
+            return juegosPorDia;
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return null;
         }
     }
 
     @GetMapping("/victorias21")
-    public ResponseEntity<Integer> getVictorias21(){
+    public ArrayList<Integer> getVictorias21(){
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 2 AND puntajeJugador = 21");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return ResponseEntity.ok(resultSet.getInt(1));
-            }
-            return ResponseEntity.notFound().build();
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
+            ArrayList<Integer> victorias21 = new ArrayList<>();
 
-    @GetMapping("/victorias21Crupier")
-    public ResponseEntity<Integer> getVictorias21Crupier(){
-        try {
             Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado = 1 AND puntajeCrupier = 21");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado =1 AND puntaje = 21");
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return ResponseEntity.ok(resultSet.getInt(1));
+            while(resultSet.next()){
+                victorias21.add(resultSet.getInt(1));
             }
-            return ResponseEntity.notFound().build();
+
+            preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado =2 AND puntaje = 21");
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                victorias21.add(resultSet.getInt(1));
+            }
+
+            return victorias21;
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return null;
         }
     }
 }
