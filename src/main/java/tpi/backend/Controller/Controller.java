@@ -8,7 +8,10 @@ import tpi.backend.Models.Carta;
 import tpi.backend.Models.Usuario;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 public class Controller {
@@ -329,11 +332,27 @@ public class Controller {
     public void guardarResultadosBD(@PathVariable int id){
     try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement st = conn.prepareStatement("INSERT INTO resultados (idUsuario, resultado) VALUES (?, ?)");
+            PreparedStatement st = conn.prepareStatement("INSERT INTO resultados (idUsuario,fecha, resultado,puntaje) VALUES (?, ?, ?,?)");
             int resultado = getGanador();
+            int puntaje = 0;
+
+            LocalDateTime fecha = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+            if(resultado == 1){
+                puntaje = calcularPuntos(2);
+            }else if (resultado == 2) {
+                puntaje = calcularPuntos(1);
+            }else if(resultado == 3){
+                puntaje = calcularPuntos(0);
+            }
 
             st.setInt(1, id);
-            st.setInt(2, resultado);
+            st.setString(2, fecha.format(formatter));
+            st.setInt(3, resultado);
+            st.setInt(4, puntaje);
+
+
             st.executeUpdate();
             st.close();
             conn.close();
