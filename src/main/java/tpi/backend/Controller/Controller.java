@@ -157,6 +157,36 @@ public class Controller {
         }
     }
 
+    @PostMapping("/logicaJugador/{opcion}")
+    public void logicaJugadorAses(@PathVariable int opcion) {
+        for (Carta carta : mazoJugador){
+            if (carta.getValor() == 11 || carta.getValor() == 1){
+                if(opcion == 1){
+                    carta.setValor(11);
+                }else {
+                    carta.setValor(1);
+                }
+            }
+            this.calcularPuntos(1);
+        }
+    }
+
+
+    @PostMapping("/logicaAsesCrupier")
+    public void logicaCrupierAses() {
+        int puntos = calcularPuntos(2);
+        for (Carta carta : mazoCrupier){
+            if (carta.getValor() == 11 || carta.getValor() == 1){
+                if(puntos < 17){
+                    carta.setValor(11);
+                }else {
+                    carta.setValor(1);
+                }
+            }
+            this.calcularPuntos(1);
+        }
+    }
+
     @GetMapping("/reset")
     public boolean reiniciar() {
         mazoJugadorAnterior = mazoJugador;
@@ -332,12 +362,12 @@ public class Controller {
     public void guardarResultadosBD(@PathVariable int id){
     try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
-            PreparedStatement st = conn.prepareStatement("INSERT INTO resultados (idUsuario,fecha, resultado,puntaje) VALUES (?, ?, ?,?)");
+            PreparedStatement st = conn.prepareStatement("INSERT INTO partida (idUsuario,fecha, resultado,puntaje) VALUES (?, ?, ?,?)");
             int resultado = getGanador();
             int puntaje = 0;
 
             LocalDateTime fecha = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             if(resultado == 1){
                 puntaje = calcularPuntos(2);
@@ -360,6 +390,8 @@ public class Controller {
             exc.printStackTrace();
         }
     }
+
+
 
 
 
