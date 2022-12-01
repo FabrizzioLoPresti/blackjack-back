@@ -222,7 +222,7 @@ public class Controller {
     public void limpiarMazosGuardados(int id){
 
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
 
             PreparedStatement delete = conn.prepareStatement("DELETE FROM mazojugador WHERE idJugador = ?");
             delete.setInt(1, id);
@@ -246,7 +246,7 @@ public class Controller {
 
         try {
             limpiarMazosGuardados(id);
-            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             //Guardar el mazo del jugador
             PreparedStatement st = conn.prepareStatement("INSERT INTO mazojugador (idJugador, valor, naipe, imagenURL) VALUES (?, ?, ?,?)");
 
@@ -284,7 +284,7 @@ public class Controller {
     public ArrayList<Carta> cargarMazoJugador(@PathVariable int id) {
         ArrayList<Carta> mazo = new ArrayList<>();
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement st = conn.prepareStatement("SELECT * FROM mazojugador WHERE idJugador = ?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -310,7 +310,7 @@ public class Controller {
     public ArrayList<Carta> cargarMazoCrupier(@PathVariable int id) {
         ArrayList<Carta> mazo = new ArrayList<>();
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement st = conn.prepareStatement("SELECT * FROM mazocrupier WHERE idJugador = ?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -335,7 +335,7 @@ public class Controller {
     @GetMapping("/hayJuegoGuardado/{id}")
     public boolean hayJuegoGuardado(@PathVariable int id) {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement st = conn.prepareStatement("SELECT * FROM mazojugador WHERE idJugador = ?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -361,7 +361,7 @@ public class Controller {
     @PostMapping("/guardarResultado/{id}")
     public void guardarResultadosBD(@PathVariable int id){
     try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement st = conn.prepareStatement("INSERT INTO partida (idUsuario,fecha, resultado,puntaje) VALUES (?, ?, ?,?)");
             int resultado = getGanador();
             int puntaje = 0;

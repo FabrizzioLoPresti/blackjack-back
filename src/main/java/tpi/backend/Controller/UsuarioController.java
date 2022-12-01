@@ -23,7 +23,7 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<Usuario> login(@RequestBody Usuario usuario){
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection con = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND password = ?");
             preparedStatement.setString(1, usuario.getUsuario());
             preparedStatement.setString(2, usuario.getPassword());
@@ -42,7 +42,7 @@ public class UsuarioController {
     @PostMapping("/registrar")
     public ResponseEntity<Usuario> register(@RequestBody Usuario usuario){
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection con = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO usuario (usuario, password) VALUES (?, ?)");
             preparedStatement.setString(1, usuario.getUsuario());
             preparedStatement.setString(2, usuario.getPassword());

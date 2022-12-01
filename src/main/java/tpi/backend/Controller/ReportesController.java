@@ -25,7 +25,7 @@ public class ReportesController {
         try {
             ArrayList<Integer> victorias = new ArrayList<>();
 
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection con = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado =1");
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -50,7 +50,7 @@ public class ReportesController {
     public ArrayList<Integer> getJuegosPorDia(){
         try {
             ArrayList<Integer> juegosPorDia = new ArrayList<>();
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection con = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida group by WEEKDAY(fecha)");
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -69,7 +69,7 @@ public class ReportesController {
         try {
             ArrayList<Integer> victorias21 = new ArrayList<>();
 
-            Connection con = DriverManager.getConnection("jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_b038d7c98f39121", "b902534b0a0d2e", "f00230c6");
+            Connection con = DriverManager.getConnection("jdbc:mysql://root:mVkIuAGNeRjdG0A4ElwN@containers-us-west-48.railway.app:7272/railway", "root", "mVkIuAGNeRjdG0A4ElwN");
             PreparedStatement preparedStatement = con.prepareStatement("SELECT COUNT(*) FROM partida WHERE resultado =1 AND puntaje = 21");
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
