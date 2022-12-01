@@ -1,9 +1,9 @@
-package tpi.backend.JWT;
+package tpi.backend.Models;
 
-public class JTWResponse {
+public class LoginDTO {
     private String token;
 
-    public JTWResponse(String token) {
+    public LoginDTO(String token) {
         this.token = token;
     }
 
